@@ -447,7 +447,7 @@ def test_empty_printer():
     assert str_printer.emptyPrinter(32) == "32"
 
 def test_settings():
-    raises(TypeError, 'sstr(S(4), method="garbage")')
+    raises(TypeError, lambda: sstr(S(4), method="garbage"))
 
 def test_RandomDomain():
     from sympy.stats import Normal, Die, Exponential, pspace, where
@@ -464,3 +464,10 @@ def test_RandomDomain():
 def test_FiniteSet():
     assert str(FiniteSet(range(1, 51))) == '{1, 2, 3, ..., 48, 49, 50}'
     assert str(FiniteSet(range(1, 6))) == '{1, 2, 3, 4, 5}'
+
+def test_PrettyPoly():
+    from sympy.polys.domains import QQ
+    F = QQ.frac_field(x, y)
+    R = QQ[x, y]
+    assert sstr(F.convert(x/(x + y))) == sstr(x/(x + y))
+    assert sstr(R.convert(x + y)) == sstr(x + y)
